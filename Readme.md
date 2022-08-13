@@ -35,7 +35,7 @@ In the after-each hook, call the executeTestRun command
           startTime,    // Start time
           error,        // Provide the error message if the status is FAILED [OPTIONAL]
           testSuiteId,   // Id of a test suite
-          screenshot     // Base the base64 encoded string of screenshot [OPTIONAL]
+          screenshot     // Provide the base64 encoded string of screenshot [OPTIONAL]
         };
 
         await qTestHelper.executeTestRun(payload);
