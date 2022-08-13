@@ -19,11 +19,13 @@ import qTestHelper from 'qtest_integration';
 
     before(() => {
       qTestHelper.setConfig({
-        projectUrl: EVIRONMENT_CONSTANTS.QTEST_URL,
-        projectId: EVIRONMENT_CONSTANTS.QTEST_PROJECTID,
-        auth: EVIRONMENT_CONSTANTS.QTEST_AUTH
+        projectUrl , // Project url
+        projectId,  // Project Id,
+        auth       // Bearer Token
       });
     })
+    ![Alt text](https://github.com/samaysimantbarik/QTestHelper/blob/master/assets/qTestHelper_scn0.png "Project configs")
+    
 ```
 In the after-each hook, call the executeTestRun command
 ```
