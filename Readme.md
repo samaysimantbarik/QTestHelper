@@ -9,9 +9,9 @@ Module that helps update test case execution results in QTest.
 npm install qtest_integration
 ```
 
-# How to use
+## How to use
 
-In before hook, call the setConfig Method
+### In before hook, call the setConfig Method
 ```
 import qTestHelper from 'qtest_integration';
 
@@ -24,10 +24,10 @@ import qTestHelper from 'qtest_integration';
         auth       // Bearer Token
       });
     })
-    ![Alt text](https://github.com/samaysimantbarik/QTestHelper/blob/master/assets/qTestHelper_scn0.png "Project configs")
-    
 ```
-In the after-each hook, call the executeTestRun command
+![Alt text](https://github.com/samaysimantbarik/QTestHelper/blob/master/assets/qTestHelper_scn0.png "Project configs")
+
+### In the after-each hook, call the executeTestRun command
 ```
  const payload =
         {
