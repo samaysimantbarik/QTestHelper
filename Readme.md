@@ -42,5 +42,5 @@ In the after-each hook, call the executeTestRun command
 
 ```
 
-![Alt text](/assets/qTestHelper_scn1.png?raw=true "Ref1")
-![Alt text](/assets/qTestHelper_scn2.png?raw=true "Ref2")
+![Alt text](https://github.com/samaysimantbarik/QTestHelper/blob/master/assets/qTestHelper_scn1.png "Ref1")
+![Alt text](https://github.com/samaysimantbarik/QTestHelper/blob/master/assets/qTestHelper_scn2.png "Ref2")
