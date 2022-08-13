@@ -1,11 +1,11 @@
 import axios from "axios";
 import { TExecutionQTest, TTestLog, TRequestBody, QTestConfigType } from "./types";
 class QTestHelper {
-    #baseUrl: string ='';
-    #config: object ={};
+    #baseUrl: string = '';
+    #config: object = {};
 
-    setConfig({ projectUrl, projectId, auth, version="v3" }
-    :QTestConfigType) {
+    setConfig({ projectUrl, projectId, auth, version = "v3" }
+        : QTestConfigType) {
         this.#baseUrl = `${projectUrl}/api/${version}/projects/${projectId}`;
         this.#config = {
             headers: {
@@ -71,6 +71,7 @@ class QTestHelper {
             startTime,
             error = '',
             testSuiteId,
+            screenshot = ""
         }: TExecutionQTest) => {
 
 
@@ -78,21 +79,14 @@ class QTestHelper {
             const existing_test_run_id = await this.#getTestRun(testCasePid, testSuiteId);
             const trId = existing_test_run_id || await this.#createTestRun(testCasePid, testSuiteId);
             const exe_start_date = startTime;
-            const test_step_logs: TTestLog = (status === 'FAILED') ?
+            const actual_result = status === 'FAILED' ? error : 'As Expected';
+            const test_step_logs: TTestLog =
                 [
                     {
                         description,
-                        expected_result: ' Should pass',
-                        actual_result: error,
-                        status: 'FAILED',
-                    },
-                ] :
-                [
-                    {
-                        description,
-                        expected_result: ' Should pass',
-                        actual_result: 'As Expected',
-                        status: 'PASSED',
+                        expected_result: 'Should pass',
+                        actual_result,
+                        status
                     },
                 ];
             const payload: TRequestBody =
@@ -102,6 +96,13 @@ class QTestHelper {
                 exe_end_date: new Date(),
                 test_step_logs,
             };
+            const attachments = (screenshot.length) && [{
+                name: "Screenshot",
+                content_type: "image/png",
+                data: screenshot
+            }]
+
+            attachments && (Object.assign(payload, { attachments }));
 
             try {
                 await axios.post(this.#baseUrl + '/test-runs/' + trId + '/auto-test-logs',
