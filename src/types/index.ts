@@ -1,7 +1,7 @@
 
 export type TExecutionQTest = {
     description: string,
-    testCasePid: string,
+    testCasePid: string|number,
     status: TStatus,
     duration?: number,
     startTime: Date,
@@ -9,6 +9,19 @@ export type TExecutionQTest = {
     error?: string,
     screenshot?: string,
     testSuiteId: string
+}
+
+export type TExecutionByDescriptionQTest = {
+    testName: string,
+    status: TStatus,
+    duration?: number,
+    startTime: Date,
+    failedStep?: string,
+    error?: string,
+    screenshot?: string,
+    testSuiteId: string,
+    errorOnDuplicate?:boolean,
+    tempModuleName?:string
 }
 
 export type TStatus = 'PASSED' | 'FAILED';
@@ -39,6 +52,13 @@ export type QTestConfigType = {
     projectId: string,
     auth: string,
     version?: string
+}
+
+export type EntityReturnType = {
+    id: number,
+    name: string,
+    pid: string,
+    parentId: string
 }
 
 
