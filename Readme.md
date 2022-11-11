@@ -44,5 +44,26 @@ import qTestHelper from 'qtest_integration';
 
 ```
 
+
+
 ![Alt text](https://github.com/samaysimantbarik/QTestHelper/blob/master/assets/qTestHelper_scn1.png "Ref1")
 ![Alt text](https://github.com/samaysimantbarik/QTestHelper/blob/master/assets/qTestHelper_scn2.png "Ref2")
+
+### Use the below method if the test is not already present in QTest
+ 
+```
+ const payload =
+        {
+          testName,   // Test case name
+          status,     // Valid value : PASSED | FAILED
+          startTime,  // Start time
+          error,      // Provide the error message if the status is FAILED [OPTIONAL]
+          testSuiteId,   // Id of a test suite
+          screenshot     // Provide the base64 encoded string of screenshot [OPTIONAL]
+          errorOnDuplicate // Default: false.If true, the application will throw an exception if multiple testcases with the same name are present
+          tempModuleName: // Name of the module inside which test will be created. Default: "Module created by Automation"
+        };
+
+        await qTestHelper.executeTestRunByName(payload);
+
+```
