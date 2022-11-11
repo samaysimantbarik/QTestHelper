@@ -14,26 +14,25 @@ class QTestHelper {
         };
     };
 
-    #getTestCaseId = async (testCasePid: string) => {
+    #getTestCaseDetailsFromPID = async (testCasePid: string | number) => {
         const response =
             await axios.get(this.#baseUrl + '/test-cases/' + testCasePid, this.#config);
         const { id, name } = response.data;
-       // console.log(id, name);
         return { id, name };
     };
 
-    #getTestRun = async (testCasePid: string|number, testSuiteId: string) => {
+    #getTestRun = async (testCasePid: string | number, testSuiteId: string) => {
         try {
             const { id: testcaseId } = typeof testCasePid === 'string'
-            ?
-            (await this.#getTestCaseId(testCasePid)).id:
-            testCasePid;
-
+                ?
+                await this.#getTestCaseDetailsFromPID(testCasePid) :
+                { id: testCasePid };
             const response =
                 await axios.get(
                     this.#baseUrl + `/test-runs?parentId=${testSuiteId}
               &parentType=test-suite`,
                     this.#config);
+
             const { items, total } = response.data;
             if (total) {
                 return items.find((r: { test_case: { id: any; }; }) =>
@@ -86,8 +85,8 @@ class QTestHelper {
         return await this.#createModule(moduleName);
     }
 
-    #createTestRun = async (testCasePid: string, testSuiteId: string) => {
-        const { id, name } = await this.#getTestCaseId(testCasePid);
+    #createTestRun = async (testCasePid: string | number, testSuiteId: string) => {
+        const { id, name } = await this.#getTestCaseDetailsFromPID(testCasePid);
         const body = {
             parentId: testSuiteId,
             parentType: 'test-suite',
@@ -176,24 +175,24 @@ class QTestHelper {
             const module = await this.#getOrCreateModule(tempModuleName);
             var testCase = await this.#createTestCase(testName, module.id);
         }
-        else if (testCases.length > 1 && errorOnDuplicate)
-            throw new Error("Test case description is not unique");
+        else if (testCases.length > 1) {
+            if (errorOnDuplicate) throw new Error(`Test case description(${testName}) is not unique`);
+            var testCase = testCases[0];
+        }
         else {
+           
             var testCase = testCases.slice(-1)[0];
         }
-
         await this.executeTestRun({
             description: testCase.name,
             testCasePid: testCase.id,
             status,
             startTime,
-            error ,
+            error,
             testSuiteId,
-            screenshot 
-
+            screenshot
         })
     }
-
 }
 
 export default new QTestHelper();
